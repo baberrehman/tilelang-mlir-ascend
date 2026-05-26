@@ -160,11 +160,11 @@ def device_codegen(device_mod: tvm.IRModule, target: Target) -> tvm.IRModule:
         # device_mod = tvm._ffi.get_global_func("target.build.tilelang_npuir")(device_mod, target)
         TILELANG_ASCEND_MODE = os.environ.get('TILELANG_ASCEND_MODE')
         if TILELANG_ASCEND_MODE is None:
-            device_mod = tvm._ffi.get_global_func("target.build.tilelang_npuir_apis")(device_mod, target)
+            device_mod = tvm._ffi.get_global_func("target.build.tilelang_npuir_apis_a5")(device_mod, target)
         elif TILELANG_ASCEND_MODE.lower().strip() in ['expert', 'exp', 'e']:
-            device_mod = tvm._ffi.get_global_func("target.build.tilelang_npuir_apis")(device_mod, target)
+            device_mod = tvm._ffi.get_global_func("target.build.tilelang_npuir_apis_a5")(device_mod, target)
         else:
-            device_mod = tvm._ffi.get_global_func("target.build.tilelang_npuir_dev")(device_mod, target)
+            device_mod = tvm._ffi.get_global_func("target.build.tilelang_npuir_dev_a5")(device_mod, target)
         return device_mod
     device_mod = tilelang.transform.LowerDeviceStorageAccessInfo()(device_mod)
     device_mod = tir.transform.LowerIntrin()(device_mod)

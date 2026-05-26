@@ -61,11 +61,11 @@ namespace codegen {
 // All VisitExpr inherited from ExprFunctor take PrimExpr as an argument and
 // return mlir::Value All VisitStmt inherited from StmtFunctor take PrimExpr as
 // an argument and return nothing
-class CodeGenTileLangNPUIRAPI final
+class CodeGenTileLangNPUIRAPIA5 final
     : public ExprFunctor<mlir::Value(const PrimExpr &)>,
       public StmtFunctor<void(const Stmt &)> {
 public:
-  CodeGenTileLangNPUIRAPI();
+  CodeGenTileLangNPUIRAPIA5();
   std::string Finish();
   // overload visitor
   mlir::Value VisitExpr_(const MinNode *op) final;
@@ -259,7 +259,7 @@ private:
   mlir::hivm::AddressSpace GetHIVMAddressSpace(String address_space);
   std::vector<long int> GetShape(Array<PrimExpr> extents);
 
-  friend void PrintConst(const FloatImmNode *op, CodeGenTileLangNPUIRAPI *p);
+  friend void PrintConst(const FloatImmNode *op, CodeGenTileLangNPUIRAPIA5 *p);
 
   mlir::Value GenMemrefLoadFromRegion(const BufferLoadNode *op);
   mlir::Value GenSubviewFromRegion(const CallNode *region_node);

@@ -6,8 +6,8 @@
  * \brief Utility to generate code
  */
 
-#ifndef CODEGEN_NPUIR_DEV_H
-#define CODEGEN_NPUIR_DEV_H
+#ifndef CODEGEN_NPUIR_DEV_A5_H
+#define CODEGEN_NPUIR_DEV_A5_H
 
 #include "../op/op.h"
 #include "codegen_npuir.h"
@@ -65,11 +65,11 @@ namespace codegen {
 // All VisitExpr inherited from ExprFunctor take PrimExpr as an argument and
 // return mlir::Value All VisitStmt inherited from StmtFunctor take PrimExpr as
 // an argument and return nothing
-class CodeGenTileLangNPUIRDEV final
+class CodeGenTileLangNPUIRDEVA5 final
     : public ExprFunctor<mlir::Value(const PrimExpr &)>,
       public StmtFunctor<void(const Stmt &)> {
 public:
-  CodeGenTileLangNPUIRDEV();
+  CodeGenTileLangNPUIRDEVA5();
   std::string Finish();
   // overload visitor
   mlir::Value VisitExpr_(const MinNode *op) final;
@@ -286,7 +286,7 @@ private:
   mlir::hivm::AddressSpace GetHIVMAddressSpace(String address_space);
   std::vector<long int> GetShape(Array<PrimExpr> extents);
 
-  friend void PrintConst(const FloatImmNode *op, CodeGenTileLangNPUIRDEV *p);
+  friend void PrintConst(const FloatImmNode *op, CodeGenTileLangNPUIRDEVA5 *p);
 
   mlir::Value GenMemrefLoadFromRegion(const BufferLoadNode *op);
   mlir::Value GenSubviewFromRegion(const CallNode *region_node);
@@ -399,14 +399,14 @@ private:
   class LoopCarriedVarCollector
       : public tir::StmtExprVisitor {
   private:
-    CodeGenTileLangNPUIRDEV* outer_;
+    CodeGenTileLangNPUIRDEVA5* outer_;
     std::vector<const VarNode*>& loop_carried_vars_;
     std::unordered_set<const VarNode *> vars_set_;
 
     void CheckVar(const tir::VarNode* var_node);
     
   public:
-    LoopCarriedVarCollector(CodeGenTileLangNPUIRDEV* outer, 
+    LoopCarriedVarCollector(CodeGenTileLangNPUIRDEVA5* outer, 
                             std::vector<const VarNode*>& loop_carried_vars)
         : outer_(outer), loop_carried_vars_(loop_carried_vars) {}
     
