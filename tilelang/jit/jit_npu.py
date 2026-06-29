@@ -846,6 +846,18 @@ class JitKernel_NPU:
         self.prim_func = metadata["primfunc"]
         self.out_idx = metadata["out_idx"]
         self._launch()
+        (
+            self.npu_module,
+            self.npu_function,
+            self.npu_n_regs,
+            self.npu_n_spills,
+        ) = NPUUtils.get().load_binary(
+            self.utils_name,
+            self.utils_kernel_src,
+            self.utils_shared,
+            self.utils_device,
+            self.mix_mode,
+        )
 
     @classmethod
     def from_database(
@@ -986,20 +998,12 @@ class JitKernel_NPU:
         full_args.extend(self.extra_args)
 
         # Run kernel
-        npu_utils = NPUUtils.get()
-        t_module, t_function, t_n_regs, t_n_spills = npu_utils.load_binary(
-            self.utils_name,
-            self.utils_kernel_src,
-            self.utils_shared,
-            self.utils_device,
-            self.mix_mode,
-        )
         self.launch_npu(
             self.launch_grid[0],
             self.launch_grid[1],
             self.launch_grid[2],
             self.launch_stream,
-            t_function,
+            self.npu_function,
             self.launch_packedMetadata,
             self.launch_metadata,
             self.launch_enter_hook,
